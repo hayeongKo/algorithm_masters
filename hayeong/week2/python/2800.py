@@ -2,32 +2,25 @@ import sys
 from itertools import combinations
 
 input = sys.stdin.readline
-sentence = list(input().rstrip())
+
+bracket = []
 left = []
-right = []
-answer = set()
+answers = []
 
-tmp = ""
+sentence = input().rstrip()
+
 for i in range(len(sentence)):
-    if sentence[i] == "(":
+    if sentence[i] == '(':
         left.append(i)
-    elif sentence[i] == ")":
-        right.append(i)
-    else:
-        tmp += sentence[i]
+    elif sentence[i] == ')':
+        bracket.append([i, left.pop()])
 
-pairs = []
-for i in range(len(left)):
-    pairs.append([left[i], right[-i-1]])
-
-for i in range(1, len(pairs)+1):
-    for pair in list(combinations(pairs, i)):
+for i in range(1, len(bracket)+1):
+    for pair in list(combinations(bracket, i)):
         temp = list(sentence)
-        for a, b in pair:
-            temp[a] = ''
-            temp[b] = ''
-        answer.add(''.join(temp))
+        for x, y in pair:
+            temp[x], temp[y] = '', ''
+        answers.append(''.join(temp))
 
-
-for word in sorted(answer):
-    print(word)
+for answer in sorted(set(answers)):
+    print(answer)
